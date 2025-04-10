@@ -1,0 +1,35 @@
+{% load static %}  
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список расходов</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+    <nav>
+        {% if user.is_authenticated %}
+            <p>Вы вошли как {{ user.username }}</p>
+            <a href="{% url 'logout' %}">Выйти</a>
+        {% else %}
+            <a href="{% url 'login' %}">Войти</a>
+            <a href="{% url 'register' %}">Регистрация</a>
+        {% endif %}
+    </nav>
+    <h1>Список расходов</h1>
+    <form method="get">
+        {{ form.as_p }}
+        <button type="submit">Фильтровать</button>
+    </form>
+    <a href="{% url 'add_category' %}">Добавить категорию</a>
+    <a href="{% url 'add_expense' %}">Добавить новый расход</a>
+    <ul>
+        {% for expense in expenses %}
+            <li>
+                {{ expense.date }}: {{ expense.description }} - {{ expense.amount }}
+                <a href="{% url 'edit_expense' expense.pk %}">Редактировать</a>
+                <a href="{% url 'delete_expense' expense.pk %}">Удалить</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
